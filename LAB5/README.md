@@ -1,6 +1,6 @@
 # LAB5 – Análisis de Servicios de Red (DNS, HTTP, FTP)
 
-## 📌 Descripción
+## Descripción
 Este laboratorio analiza el funcionamiento de múltiples servicios de red en un mismo servidor dentro de una red local utilizando Cisco Packet Tracer.
 
 Se configuraron y analizaron los siguientes servicios:
@@ -12,7 +12,7 @@ Mediante Simulation Mode se observaron los paquetes intercambiados entre el clie
 
 ---
 
-## 🖥️ Topología
+## Topología
 La red está compuesta por:
 - 1 PC (cliente)
 - 1 Switch Cisco 2960
@@ -22,7 +22,7 @@ Todos los dispositivos se encuentran en la misma red local (LAN).
 
 ---
 
-## ⚙️ Servicios configurados
+## Servicios configurados
 
 | Protocolo | Puerto | Transporte |
 |----------|-------|-----------|
@@ -32,7 +32,7 @@ Todos los dispositivos se encuentran en la misma red local (LAN).
 
 ---
 
-## 🔍 Análisis realizado
+## Análisis realizado
 
 Se analizaron los siguientes procesos:
 
@@ -53,7 +53,7 @@ DNS → TCP → HTTP
 
 ---
 
-## 📊 Resultados
+## Resultados
 
 - Resolución DNS exitosa  
 - Conexión HTTP establecida  
@@ -64,6 +64,6 @@ DNS → TCP → HTTP
 
 ---
 
-## 📚 Conclusión
+## Conclusión
 
 El laboratorio permitió comprender cómo interactúan los protocolos de aplicación (DNS, HTTP, FTP) con los protocolos de transporte y el uso de puertos en una comunicación cliente-servidor.
