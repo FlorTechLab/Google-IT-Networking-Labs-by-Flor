@@ -1,34 +1,148 @@
-# LAB 8 – Configuración de Routing, NAT y PAT
+# IT-Network-Labs-Flor-8
 
-## Descripción
-Este laboratorio tiene como objetivo configurar y validar la comunicación entre una red privada y una red externa utilizando routing estático y traducción de direcciones (NAT con PAT).
+# LAB 8 – Configuración de Routing, NAT y PAT  
+**Curso:** The Bits and Bytes of Computer Networking (Google)  
 
-Se simula un escenario real en el cual un host de una red privada accede a un servidor externo, similar al acceso a Internet.
+**Autor:** Florencia Horita  
 
----
-
-## Topología
-La red está compuesta por:
-- 1 PC (cliente)
-- 2 Routers (R1 y R2)
-- 1 Servidor
-
-Conexión:
-PC → R1 → R2 → Servidor
+**Fecha:** 20/04/2026  
 
 ---
 
-## Esquema de direccionamiento
+## Descripción  
+Este laboratorio demuestra la configuración de comunicación entre una red privada y una red externa utilizando **routing estático**, **NAT** y **PAT**.  
 
-- PC: 10.0.0.2
-- R1 G0/0: 10.0.0.1
-- R1 G0/1: 200.1.1.1
-- R2 G0/0: 200.1.1.2
-- R2 G0/1: 8.8.8.1
-- Servidor: 8.8.8.8
+Se simula un escenario real donde una PC de una red interna accede a un servidor externo, representando el acceso a Internet.  
 
 ---
 
-## Configuración de Routing
+## Objetivos  
+- Comprender el funcionamiento del routing entre redes.  
+- Configurar rutas estáticas en routers Cisco.  
+- Implementar NAT (Network Address Translation).  
+- Implementar PAT (Port Address Translation).  
+- Verificar la conectividad entre red privada y externa.  
 
-### Ruta por defecto (R1)
+---
+
+## Topología  
+[PC] → [R1] → [R2] → [Servidor]  
+
+---
+
+## Configuración de red  
+
+### PC  
+- **IP:** 10.0.0.2  
+- **Máscara:** 255.255.255.0  
+- **Gateway:** 10.0.0.1  
+
+### Servidor  
+- **IP:** 8.8.8.8  
+- **Máscara:** 255.255.255.0  
+- **Gateway:** 8.8.8.1  
+
+### Direccionamiento  
+
+| Dispositivo | Interfaz | IP |
+|------------|----------|------|
+| PC | — | 10.0.0.2 |
+| R1 | G0/0 | 10.0.0.1 |
+| R1 | G0/1 | 200.1.1.1 |
+| R2 | G0/0 | 200.1.1.2 |
+| R2 | G0/1 | 8.8.8.1 |
+| Servidor | — | 8.8.8.8 |
+
+---
+
+## Configuración de Routers  
+
+### Router R1  
+```bash
+interface g0/0
+ip address 10.0.0.1 255.255.255.0
+no shutdown
+
+interface g0/1
+ip address 200.1.1.1 255.255.255.0
+no shutdown
+```
+
+### Router R2  
+```bash
+interface g0/0
+ip address 200.1.1.2 255.255.255.0
+no shutdown
+
+interface g0/1
+ip address 8.8.8.1 255.255.255.0
+no shutdown
+```
+
+---
+
+## Configuración de Routing  
+
+### Ruta por defecto en R1  
+```bash
+ip route 0.0.0.0 0.0.0.0 200.1.1.2
+```
+
+### Ruta de retorno en R2  
+```bash
+ip route 10.0.0.0 255.255.255.0 200.1.1.1
+```
+
+---
+
+## Configuración de NAT y PAT (R1)  
+
+### Lista de acceso  
+```bash
+access-list 1 permit 10.0.0.0 0.0.0.255
+```
+
+### Interfaces NAT  
+```bash
+interface g0/0
+ip nat inside
+
+interface g0/1
+ip nat outside
+```
+
+### Activación de PAT  
+```bash
+ip nat inside source list 1 interface g0/1 overload
+```
+
+---
+
+## Verificación  
+
+### Prueba de conectividad  
+```bash
+ping 8.8.8.8
+```
+
+### Verificación de NAT  
+```bash
+show ip nat translations
+```
+
+---
+
+## Resultados  
+- Comunicación exitosa entre la PC y el servidor.  
+- Traducción correcta de IP privada a pública.  
+- Uso de PAT para múltiples conexiones con una sola IP pública.  
+
+---
+
+## Análisis  
+El flujo de red fue el siguiente:  
+
+- La PC envía tráfico al servidor.  
+- R1 traduce la IP privada mediante NAT/PAT.  
+- R2 enruta el tráfico hacia el servidor.  
+- El servidor responde correctamente.  
